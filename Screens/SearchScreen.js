@@ -1,37 +1,56 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList, Text, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, TextInput, FlatList, Text, TouchableOpacity, Image, Button } from 'react-native';
+import debounce from 'lodash.debounce';
 
 export default function SearchScreen({ navigation }) {
   const [query, setQuery] = useState('');
   const [drinks, setDrinks] = useState([]);
 
-  const fetchDrinks = async () => {
-    const res = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${query}`);
-    const data = await res.json();
-    setDrinks(data.drinks || []);
+  // Fetch drinks from TheCocktailDB
+  const fetchDrinks = async (text) => {
+    if (!text.trim()) {
+      setDrinks([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${text}`);
+      const data = await res.json();
+      setDrinks(data.drinks || []);
+    } catch (error) {
+      console.error('Error fetching drinks:', error);
+    }
+  };
+
+  // Debounced search handler
+  const debouncedSearch = useCallback(debounce(fetchDrinks, 400), []);
+
+  const handleChange = (text) => {
+    setQuery(text);
+    debouncedSearch(text);
   };
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ padding: 20, flex: 1 }}>
       <TextInput
-        placeholder="Search cocktails"
+        placeholder="Search for a drink..."
         value={query}
-        onChangeText={setQuery}
-        style={{ borderBottomWidth: 1, marginBottom: 10 }}
+        onChangeText={handleChange}
+        style={{ borderBottomWidth: 1, marginBottom: 10, fontSize: 16 }}
       />
-      <Button title="Search" onPress={fetchDrinks} />
       <FlatList
         data={drinks}
         keyExtractor={(item) => item.idDrink}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigation.navigate('DrinkDetail', { drink: item })}>
-            <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-              <Image source={{ uri: item.strDrinkThumb }} style={{ width: 60, height: 60, borderRadius: 5 }} />
-              <Text style={{ marginLeft: 10, fontSize: 16 }}>{item.strDrink}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8 }}>
+              <Image source={{ uri: item.strDrinkThumb }} style={{ width: 50, height: 50, borderRadius: 6 }} />
+              <Text style={{ marginLeft: 10 }}>{item.strDrink}</Text>
             </View>
           </TouchableOpacity>
         )}
       />
+      <Button title="View Favorites" onPress={() => navigation.navigate('Favorites')} />
     </View>
   );
 }
