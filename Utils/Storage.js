@@ -43,3 +43,4 @@ export const removeFavorite = async (id) => {
     console.error('Error removing favorite:', e);
   }
 };
+
