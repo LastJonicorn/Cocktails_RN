@@ -50,7 +50,6 @@ export default function SearchScreen({ navigation }) {
           </TouchableOpacity>
         )}
       />
-      <Button title="View Favorites" onPress={() => navigation.navigate('Favorites')} />
     </View>
   );
 }

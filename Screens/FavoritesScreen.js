@@ -41,7 +41,6 @@ const handleRemove = (idDrink, name) => {
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 22, marginBottom: 10 }}>Your Favorites</Text>
       <FlatList
         data={favorites}
         keyExtractor={(item) => item.idDrink}
