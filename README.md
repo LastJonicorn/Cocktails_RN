@@ -38,4 +38,4 @@ Implemented using `@react-navigation`:
 
 ## 📸 Screenshots
 
-_Coming soon – or you can generate mockups via Expo Go on your own device._
+_Coming soon_
