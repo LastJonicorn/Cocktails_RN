@@ -8,6 +8,7 @@ import SearchScreen from './Screens/SearchScreen';
 import FavoritesScreen from './Screens/FavoritesScreen';
 import DrinkDetailScreen from './Screens/DrinkDetailScreen';
 import FavoriteDetailScreen from './Screens/FavoriteDetailScreen';
+import RandomScreen from './Screens/RandomScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -17,6 +18,15 @@ function SearchStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="DrinkDetail" component={DrinkDetailScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function RandomStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Random" component={RandomScreen} />
       <Stack.Screen name="DrinkDetail" component={DrinkDetailScreen} />
     </Stack.Navigator>
   );
@@ -49,6 +59,16 @@ export default function App() {
           name="SearchTab"
           component={SearchStack}
           options={{ title: 'Search' }}
+        />
+        <Tab.Screen
+          name="RandomTab"
+          component={RandomStack}
+          options={{
+            title: 'Random',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="dice-outline" size={size} color={color} />
+            ),
+          }}
         />
         <Tab.Screen
           name="FavoritesTab"
