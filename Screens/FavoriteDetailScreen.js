@@ -1,31 +1,47 @@
 import React from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native';
+import globalStyles from '../Styles/Global';
 
 export default function FavoriteDetailScreen({ route }) {
   const { drink } = route.params;
 
   return (
-    <ScrollView style={{ padding: 20 }}>
-      <Image source={{ uri: drink.strDrinkThumb }} style={{ width: '100%', height: 200, borderRadius: 10 }} />
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginVertical: 10 }}>{drink.strDrink}</Text>
-      <Text style={{ marginBottom: 10, fontStyle: 'italic' }}>{drink.strAlcoholic} - {drink.strCategory}</Text>
-      <Text style={{ fontWeight: 'bold', marginTop: 10 }}>Instructions:</Text>
-      <Text style={{ marginBottom: 20 }}>{drink.strInstructions}</Text>
+    <SafeAreaView style={globalStyles.screen}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
 
-      {/* Optional: Show ingredients */}
-      <Text style={{ fontWeight: 'bold' }}>Ingredients:</Text>
-      {Array.from({ length: 15 }, (_, i) => {
-        const ingredient = drink[`strIngredient${i + 1}`];
-        const measure = drink[`strMeasure${i + 1}`];
-        if (ingredient) {
-          return (
-            <Text key={i}>
-              • {measure ? `${measure} ` : ''}{ingredient}
-            </Text>
-          );
-        }
-        return null;
-      })}
-    </ScrollView>
+        <Text style={globalStyles.title}>{drink.strDrink}</Text>
+
+        <Image source={{ uri: drink.strDrinkThumb }} style={{ width: '100%', height: 300, borderRadius: 10 }} />
+        
+        {/* Metadata */}
+        <Text style={globalStyles.text}>
+          {drink.strAlcoholic} • {drink.strCategory}
+        </Text>
+
+        {/* Instructions */}
+        <View style={globalStyles.card}>
+          <Text style={globalStyles.subhead}>Instructions:</Text>
+          <Text style={globalStyles.text}>{drink.strInstructions}</Text>
+        </View>
+
+        {/* Ingredients */}
+        <View style={globalStyles.card}>
+          <Text style={globalStyles.subhead}>Ingredients:</Text>
+          {Array.from({ length: 15 }, (_, i) => {
+            const ingredient = drink[`strIngredient${i + 1}`];
+            const measure = drink[`strMeasure${i + 1}`];
+            if (ingredient) {
+              return (
+                <Text key={i}>
+                  • {measure ? `${measure} ` : ''}{ingredient}
+                </Text>
+              );
+            }
+            return null;
+          })}
+        </View>
+
+      </ScrollView>
+    </SafeAreaView>
   );
 }

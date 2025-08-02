@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  SafeAreaView,
-  Alert,
-  TouchableOpacity,
-  ActivityIndicator,
-  Button
-} from 'react-native';
+import {View,Text,Image,ScrollView,SafeAreaView,Alert,TouchableOpacity,ActivityIndicator,Button,} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../Styles/Global';
 import { saveFavorite, getFavorites } from '../Utils/Storage';
 
-export default function RandomScreen({ navigation }) {
+export default function RandomScreen() {
   const [drink, setDrink] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -37,7 +27,7 @@ export default function RandomScreen({ navigation }) {
 
   const checkIfFavorite = async (drinkToCheck) => {
     const favorites = await getFavorites();
-    const exists = favorites.some(d => d.idDrink === drinkToCheck.idDrink);
+    const exists = favorites.some((d) => d.idDrink === drinkToCheck.idDrink);
     setIsFavorite(exists);
   };
 
@@ -48,6 +38,7 @@ export default function RandomScreen({ navigation }) {
       Alert.alert("Already Saved", `${drink.strDrink} is already in your favorites.`);
       return;
     }
+
     try {
       const saved = await saveFavorite(drink);
       if (saved) {
@@ -75,55 +66,65 @@ export default function RandomScreen({ navigation }) {
 
   return (
     <SafeAreaView style={globalStyles.screen}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        {/* Title + Heart Icon Row */}
+      <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
+        {/* Title & Save */}
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-          <Text style={[globalStyles.title, { flex: 1 }]}>
+          <Text style={[globalStyles.title, { flex: 1, textAlign: 'left' }]}>
             {drink.strDrink}
           </Text>
           <TouchableOpacity onPress={handleSave}>
             <Icon
               name={isFavorite ? 'heart' : 'heart-outline'}
-              size={50}
+              size={30}
               color={isFavorite ? 'red' : 'gray'}
             />
           </TouchableOpacity>
         </View>
 
+        {/* Image */}
         <Image
           source={{ uri: drink.strDrinkThumb }}
-          style={{ width: '100%', height: 300, borderRadius: 10 }}
+          style={{ width: '100%', height: 300, borderRadius: 10, marginBottom: 16 }}
         />
 
+        {/* Metadata */}
         <Text style={globalStyles.text}>
           {drink.strAlcoholic} • {drink.strCategory}
         </Text>
 
-        <Text style={globalStyles.subhead}>Instructions</Text>
-        <Text style={globalStyles.text}>{drink.strInstructions}</Text>
+        {/* Instructions */}
+        <View style={globalStyles.card}>
+          <Text style={globalStyles.subhead}>Instructions</Text>
+          <Text style={globalStyles.text}>{drink.strInstructions}</Text>
+        </View>
 
-        <Text style={globalStyles.subhead}>Ingredients</Text>
-        {Array.from({ length: 15 }, (_, i) => {
-          const ingredient = drink[`strIngredient${i + 1}`];
-          const measure = drink[`strMeasure${i + 1}`];
-          if (ingredient) {
-            return (
-              <Text key={i} style={{ marginVertical: 2, fontSize: 15 }}>
-                • {measure ? `${measure.trim()} ` : ''}{ingredient}
-              </Text>
-            );
-          }
-          return null;
-        })}
-
-        <View style={{ marginTop: 30 }}>
-          <Button
-            title="Get Another Random Drink"
-            onPress={fetchRandomDrink}
-            color="#2196F3"
-          />
+        {/* Ingredients */}
+        <View style={globalStyles.card}>
+          <Text style={globalStyles.subhead}>Ingredients</Text>
+          {Array.from({ length: 15 }, (_, i) => {
+            const ingredient = drink[`strIngredient${i + 1}`];
+            const measure = drink[`strMeasure${i + 1}`];
+            if (ingredient) {
+              return (
+                <Text key={i} style={globalStyles.text}>
+                  • {measure ? `${measure.trim()} ` : ''}{ingredient}
+                </Text>
+              );
+            }
+            return null;
+          })}
         </View>
       </ScrollView>
+
+      {/* Refresh Button */}
+      <View style={globalStyles.button}>
+        <Button
+          title="Get Another Random Drink"
+          onPress={fetchRandomDrink}
+          color="#2196F3"
+        />
+      </View>
+
     </SafeAreaView>
   );
 }

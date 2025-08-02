@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, Image, Button } from 'react-native';
 import debounce from 'lodash.debounce';
+import globalStyles from '../Styles/Global';
+import colors from '../Styles/Colors';
 
 export default function SearchScreen({ navigation }) {
   const [query, setQuery] = useState('');
@@ -31,7 +33,7 @@ export default function SearchScreen({ navigation }) {
   };
 
   return (
-    <View style={{ padding: 20, flex: 1 }}>
+    <View style={globalStyles.screen}>
       <TextInput
         placeholder="Search for a drink..."
         value={query}
@@ -43,9 +45,9 @@ export default function SearchScreen({ navigation }) {
         keyExtractor={(item) => item.idDrink}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigation.navigate('DrinkDetail', { drink: item })}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8 }}>
-              <Image source={{ uri: item.strDrinkThumb }} style={{ width: 50, height: 50, borderRadius: 6 }} />
-              <Text style={{ marginLeft: 10 }}>{item.strDrink}</Text>
+            <View style={[globalStyles.card, {flexDirection: 'row', alignItems: 'center', marginVertical: 8}]}>
+              <Image source={{ uri: item.strDrinkThumb }} style={{ width: 75, height: 75, borderRadius: 6 }} />
+              <Text style={[globalStyles.text,{marginLeft: 10, fontSize: 18}]}>{item.strDrink}</Text>
             </View>
           </TouchableOpacity>
         )}
