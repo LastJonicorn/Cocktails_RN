@@ -27,6 +27,7 @@ export default StyleSheet.create({
     fontStyle: 'italic',
     color: colors.text,
     marginBottom: 12,
+    fontFamily:'normal',
   },
   button: {
     marginTop: 20,

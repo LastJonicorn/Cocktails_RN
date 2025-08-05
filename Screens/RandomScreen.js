@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {View,Text,Image,ScrollView,SafeAreaView,Alert,TouchableOpacity,ActivityIndicator,Button,} from 'react-native';
+import {View,Text,Image,ScrollView,SafeAreaView,Alert,TouchableOpacity,ActivityIndicator,Button,ImageBackground} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../Styles/Global';
 import { saveFavorite, getFavorites } from '../Utils/Storage';
+import BackgroundWrapper from '../Components/BackgroundWrapper';
+
+import { useNavigation } from '@react-navigation/native'; // Remove after testing
 
 export default function RandomScreen() {
   const [drink, setDrink] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const navigation = useNavigation(); // Remove after testing
 
   const fetchRandomDrink = async () => {
     setLoading(true);
@@ -65,66 +70,73 @@ export default function RandomScreen() {
   }
 
   return (
-    <SafeAreaView style={globalStyles.screen}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
-        {/* Title & Save */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-          <Text style={[globalStyles.title, { flex: 1, textAlign: 'left' }]}>
-            {drink.strDrink}
+    <BackgroundWrapper>
+      <SafeAreaView>{/* style={globalStyles.screen} Solid color*/}
+        <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
+          {/* Title & Save */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10,}}>
+            <Text style={[globalStyles.title, { flex: 1, textAlign: 'left' }]}>
+              {drink.strDrink}
+            </Text>
+            <TouchableOpacity onPress={handleSave}>
+              <Icon
+                name={isFavorite ? 'heart' : 'heart-outline'}
+                size={30}
+                color={isFavorite ? 'red' : 'gray'}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Image */}
+          <Image
+            source={{ uri: drink.strDrinkThumb }}
+            style={{ width: '100%', height: 300, borderRadius: 10, marginBottom: 16 }}
+          />
+
+          {/* Metadata */}
+          <Text style={globalStyles.text}>
+            {drink.strAlcoholic} • {drink.strCategory}
           </Text>
-          <TouchableOpacity onPress={handleSave}>
-            <Icon
-              name={isFavorite ? 'heart' : 'heart-outline'}
-              size={30}
-              color={isFavorite ? 'red' : 'gray'}
-            />
-          </TouchableOpacity>
+
+          {/* Instructions */}
+          <View style={globalStyles.card}>
+            <Text style={globalStyles.subhead}>Instructions</Text>
+            <Text style={globalStyles.text}>{drink.strInstructions}</Text>
+          </View>
+
+          {/* Ingredients */}
+          <View style={globalStyles.card}>
+            <Text style={globalStyles.subhead}>Ingredients</Text>
+            {Array.from({ length: 15 }, (_, i) => {
+              const ingredient = drink[`strIngredient${i + 1}`];
+              const measure = drink[`strMeasure${i + 1}`];
+              if (ingredient) {
+                return (
+                  <Text key={i} style={globalStyles.text}>
+                    • {measure ? `${measure.trim()} ` : ''}{ingredient}
+                  </Text>
+                );
+              }
+              return null;
+            })}
+          </View>
+        </ScrollView>
+
+        {/* Refresh Button */}
+        <View style={globalStyles.button}>
+          <Button
+            title="Get Another Random Drink"
+            onPress={fetchRandomDrink}
+            color="#2196F3"
+          />
+          {/* Remove after testing */}
+          <Button
+            title="Go to Age Gate"
+            onPress={() => navigation.replace('AgeGate')}
+          /> 
         </View>
 
-        {/* Image */}
-        <Image
-          source={{ uri: drink.strDrinkThumb }}
-          style={{ width: '100%', height: 300, borderRadius: 10, marginBottom: 16 }}
-        />
-
-        {/* Metadata */}
-        <Text style={globalStyles.text}>
-          {drink.strAlcoholic} • {drink.strCategory}
-        </Text>
-
-        {/* Instructions */}
-        <View style={globalStyles.card}>
-          <Text style={globalStyles.subhead}>Instructions</Text>
-          <Text style={globalStyles.text}>{drink.strInstructions}</Text>
-        </View>
-
-        {/* Ingredients */}
-        <View style={globalStyles.card}>
-          <Text style={globalStyles.subhead}>Ingredients</Text>
-          {Array.from({ length: 15 }, (_, i) => {
-            const ingredient = drink[`strIngredient${i + 1}`];
-            const measure = drink[`strMeasure${i + 1}`];
-            if (ingredient) {
-              return (
-                <Text key={i} style={globalStyles.text}>
-                  • {measure ? `${measure.trim()} ` : ''}{ingredient}
-                </Text>
-              );
-            }
-            return null;
-          })}
-        </View>
-      </ScrollView>
-
-      {/* Refresh Button */}
-      <View style={globalStyles.button}>
-        <Button
-          title="Get Another Random Drink"
-          onPress={fetchRandomDrink}
-          color="#2196F3"
-        />
-      </View>
-
-    </SafeAreaView>
+      </SafeAreaView>
+    </BackgroundWrapper>
   );
 }

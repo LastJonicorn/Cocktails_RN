@@ -4,6 +4,7 @@ import { getFavorites, removeFavorite } from '../Utils/Storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../Styles/Global';
 import colors from '../Styles/Colors';
+import BackgroundWrapper from '../Components/BackgroundWrapper';
 
 export default function FavoritesScreen({ navigation }) {
   const [favorites, setFavorites] = useState([]);
@@ -43,28 +44,30 @@ const handleRemove = (idDrink, name) => {
   }, [navigation]);
 
   return (
-    <View style={globalStyles.screen}>
-      <FlatList
-        data={favorites}
-        keyExtractor={(item) => item.idDrink}
-        renderItem={({ item }) => (
-          <View style={[globalStyles.card, { flexDirection: 'row', alignItems: 'center', marginVertical: 8, justifyContent: 'space-between' }]}>
-            <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
-              onPress={() => navigation.navigate('FavoriteDetail', { drink: item })}
-            >
-              <Image source={{ uri: item.strDrinkThumb }} style={{ width: 50, height: 50, borderRadius: 6 }} />
-              <Text style={{ marginLeft: 10, fontSize: 18, paddingRight: 50 }}>{item.strDrink}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleRemove(item.idDrink, item.strDrink)}
-              style={{ padding: 8 }}
-            >
-              <Icon name="trash-outline" size={24} color="crimson" />
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-    </View>
+    <BackgroundWrapper>
+      <View>
+        <FlatList
+          data={favorites}
+          keyExtractor={(item) => item.idDrink}
+          renderItem={({ item }) => (
+            <View style={[globalStyles.card, { flexDirection: 'row', alignItems: 'center', marginVertical: 8, justifyContent: 'space-between' }]}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
+                onPress={() => navigation.navigate('FavoriteDetail', { drink: item })}
+              >
+                <Image source={{ uri: item.strDrinkThumb }} style={{ width: 50, height: 50, borderRadius: 6 }} />
+                <Text style={{ marginLeft: 10, fontSize: 18, paddingRight: 50 }}>{item.strDrink}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleRemove(item.idDrink, item.strDrink)}
+                style={{ padding: 8 }}
+              >
+                <Icon name="trash-outline" size={24} color="crimson" />
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </View>
+    </BackgroundWrapper>
   );
 }

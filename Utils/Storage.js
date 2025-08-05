@@ -44,3 +44,12 @@ export const removeFavorite = async (id) => {
   }
 };
 
+export const setAgeConfirmed = async () => {
+  await AsyncStorage.setItem('ageConfirmed', 'true');
+};
+
+export const isAgeConfirmed = async () => {
+  const value = await AsyncStorage.getItem('ageConfirmed');
+  return value === 'true';
+};
+
