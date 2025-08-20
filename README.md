@@ -20,8 +20,9 @@ A modern React Native mobile app for exploring, searching, and saving cocktail r
 Implemented using `@react-navigation`:
 
 - `Search` – Home screen with drink search and access to drink details
-<img src="assets/SSsearch.jpg" width="400" />
+<img src="assets/SSsearch.jpg" width="200" />
 - `Favorites` – View and manage saved drinks
+<img src="assets/SSfavorites.jpg" width="200" />
 - `Random` – Discover a new random drink every time
 - All navigated via a **Bottom Tab Navigator**
 
@@ -40,6 +41,7 @@ Implemented using `@react-navigation`:
 ## 📸 Screenshots
 
 _Coming soon_
+
 
 
 
