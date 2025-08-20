@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { isAgeConfirmed } from './Utils/Storage';
+import { View, Text, Image } from 'react-native';
+import logo from './assets/CocktailLogo.png';
 
 // Screens
 import SearchScreen from './Screens/SearchScreen';
@@ -21,14 +23,23 @@ const Drawer = createDrawerNavigator();
 const InnerStack = createNativeStackNavigator();
 
 // Shared header with gear icon that opens drawer
-const headerWithSettings = (navigation) => ({
+const headerWithSettings = (navigation, title) => ({
+  headerTitle: () => (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Image
+        source={logo}
+        style={{ width: 24, height: 24, resizeMode: 'contain', marginRight: 8 }}
+      />
+      <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 8 }}>{title}</Text>
+    </View>
+  ),
   headerRight: () => (
     <Icon
       name="settings-outline"
       size={24}
       color="black"
       style={{ marginRight: 16 }}
-      onPress={() => navigation.openDrawer()} // opens the drawer!
+      onPress={() => navigation.openDrawer()}
     />
   ),
 });
@@ -40,7 +51,7 @@ function SearchStack() {
       <InnerStack.Screen
         name="Search"
         component={SearchScreen}
-        options={({ navigation }) => headerWithSettings(navigation)}
+        options={({ navigation }) => headerWithSettings(navigation, 'Search')}
       />
       <InnerStack.Screen name="DrinkDetail" component={DrinkDetailScreen} />
     </InnerStack.Navigator>
@@ -53,7 +64,7 @@ function RandomStack() {
       <InnerStack.Screen
         name="Random"
         component={RandomScreen}
-        options={({ navigation }) => headerWithSettings(navigation)}
+        options={({ navigation }) => headerWithSettings(navigation, 'Random')}
       />
       <InnerStack.Screen name="DrinkDetail" component={DrinkDetailScreen} />
     </InnerStack.Navigator>
@@ -66,7 +77,7 @@ function FavoritesStack() {
       <InnerStack.Screen
         name="Favorites"
         component={FavoritesScreen}
-        options={({ navigation }) => headerWithSettings(navigation)}
+        options={({ navigation }) => headerWithSettings(navigation, 'Favorites')}
       />
       <InnerStack.Screen name="FavoriteDetail" component={FavoriteDetailScreen} />
     </InnerStack.Navigator>
@@ -87,6 +98,8 @@ function MainTabs() {
             : 'heart';
           return <Icon name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: '#fe9900',   // <-- active color
+        tabBarInactiveTintColor: '#2c2c2c',   // <-- inactive color
       })}
     >
       <Tab.Screen name="SearchTab" component={SearchStack} options={{ title: 'Search' }} />

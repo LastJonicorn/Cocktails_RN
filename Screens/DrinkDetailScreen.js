@@ -47,7 +47,7 @@ export default function DrinkDetailScreen({ route }) {
             <TouchableOpacity onPress={handleSave}>
               <Icon
                 name={isFavorite ? 'heart' : 'heart-outline'}
-                size={50}
+                size={40}
                 color={isFavorite ? 'red' : 'gray'}
               />
             </TouchableOpacity>

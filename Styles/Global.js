@@ -4,7 +4,7 @@ import colors from './Colors';
 export default StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.background,
+    //backgroundColor: colors.background,
     padding: 16,
   },
   title: {
