@@ -2,6 +2,8 @@
 
 A modern React Native mobile app for exploring, searching, and saving cocktail recipes. Powered by [TheCocktailDB API](https://www.thecocktaildb.com/), this app offers users a smooth and interactive way to discover drinks, view details, and manage their favorites.
 
+<img src="assets/SSsearch.jpg" width="200" /> <img src="assets/SSfavorites.jpg" width="200" />
+
 ## ✨ Features
 
 - 🔍 **Search Cocktails** – Type and get instant suggestions with debounced search.
@@ -20,7 +22,6 @@ A modern React Native mobile app for exploring, searching, and saving cocktail r
 Implemented using `@react-navigation`:
 
 - `Search` – Home screen with drink search and access to drink details
-<img src="assets/SSsearch.jpg" width="200" /> <img src="assets/SSfavorites.jpg" width="200" />
 - `Favorites` – View and manage saved drinks
 - `Random` – Discover a new random drink every time
 - All navigated via a **Bottom Tab Navigator**
@@ -40,6 +41,7 @@ Implemented using `@react-navigation`:
 ## 📸 Screenshots
 
 _Coming soon_
+
 
 
 
