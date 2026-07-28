@@ -35,12 +35,8 @@ Implemented using `@react-navigation`:
 - **AsyncStorage** – Persistent storage for favorites
 - **Lodash.debounce** – Optimized search input
 - **Ionicons** – For interactive icons like the heart button
+- **Cloudflare** – For safe handeling of APIkey and API responses
 
----
-
-## 📸 Screenshots
-
-_Coming soon_
 
 
 
